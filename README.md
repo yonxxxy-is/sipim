@@ -1,229 +1,131 @@
-# SIPIM - Store Information & Management System
+# SIPIM
 
-Laravel 11 + Inertia.js + React + TypeScript + Tailwind CSS + MySQL
+**Sistem Informasi dan Pengelolaan Inventaris Minimarket**
 
-## 📋 Requirements
+SIPIM adalah aplikasi berbasis web untuk membantu operasional toko atau minimarket. Aplikasi ini menyediakan pengelolaan produk dan stok, transaksi kasir, data pemasok, serta ringkasan penjualan dalam satu sistem.
 
-- PHP >= 8.2
-- Composer
-- Node.js >= 18
+## Fitur
+
+- **Dashboard** — ringkasan dan grafik penjualan serta produk terlaris, dengan ekspor laporan PDF.
+- **Kasir (POS)** — proses checkout dan pencatatan transaksi.
+- **Produk dan kategori** — pengelolaan katalog dan informasi stok.
+- **Transaksi** — melihat riwayat transaksi dan mengunduh data dalam format Excel.
+- **Pemasok** — pengelolaan informasi pemasok.
+- **Pengguna dan hak akses** — peran owner dan employee dengan akses fitur yang berbeda.
+- **Pengaturan toko** — mengatur informasi toko dan mengimpor data menggunakan template.
+- **Profil** — mengelola informasi akun dan foto profil.
+
+## Teknologi
+
+- PHP 8.2+, Laravel 11
 - MySQL
-- Git
+- React 18, TypeScript, Inertia.js
+- Tailwind CSS, Vite
+- Laravel Excel, DomPDF
 
-## 🚀 Installation
+## Persiapan
 
-### 1. Clone Project
+Pastikan perangkat Anda telah memasang:
+
+- PHP 8.2 atau lebih baru beserta ekstensi PHP yang dibutuhkan Laravel
+- Composer
+- Node.js 18 atau lebih baru dan npm
+- MySQL
+
+## Instalasi
+
+1. Clone repository dan masuk ke folder project:
+
+   ```bash
+   git clone https://github.com/yonxxxy-is/sipim.git
+   cd sipim
+   ```
+
+2. Pasang dependency:
+
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. Buat file `.env` di root project dan isi dengan konfigurasi minimum berikut. `APP_KEY` akan dibuat pada langkah selanjutnya:
+
+   ```env
+   APP_NAME=SIPIM
+   APP_ENV=local
+   APP_DEBUG=true
+   APP_URL=http://localhost:8000
+   APP_KEY=
+
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=sipim
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+   Pastikan database `sipim` sudah dibuat di MySQL sebelum menjalankan migrasi.
+
+4. Buat application key dan siapkan database:
+
+   ```bash
+   php artisan key:generate
+   php artisan migrate --seed
+   ```
+
+5. Jalankan aplikasi. Buka dua terminal dari folder project:
+
+   ```bash
+   php artisan serve
+   ```
+
+   ```bash
+   npm run dev
+   ```
+
+6. Buka [http://localhost:8000](http://localhost:8000).
+
+## Akun demo lokal
+
+Seeder menyediakan akun berikut untuk keperluan demonstrasi lokal:
+
+| Peran | Email | Kata sandi |
+|---|---|---|
+| Owner | `owner@sipim.com` | `password` |
+| Employee | `employee@sipim.com` | `password` |
+
+Kredensial tersebut hanya untuk development/demo. Ganti atau hapus akun demo dan gunakan kata sandi yang kuat sebelum aplikasi dipakai di lingkungan bersama atau production.
+
+## Perintah pengembangan
 
 ```bash
-# Extract atau clone project ini
-cd sipim-laravel
-```
+# Menjalankan server frontend
+npm run dev
 
-### 2. Install PHP Dependencies
+# Membuat asset frontend untuk production
+npm run build
 
-```bash
-composer install
-```
-
-### 3. Install Node Dependencies
-
-```bash
-npm install
-```
-
-### 4. Environment Setup
-
-```bash
-# Copy .env.example ke .env
-cp .env.example .env
-
-# Generate application key
-php artisan key:generate
-```
-
-### 5. Database Configuration
-
-Edit file `.env` dan sesuaikan dengan database MySQL Anda:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=sipim_db
-DB_USERNAME=root
-DB_PASSWORD=your_password
-```
-
-### 6. Create Database
-
-Buat database di MySQL:
-
-```sql
-CREATE DATABASE sipim_db;
-```
-
-### 7. Run Migrations & Seeders
-
-```bash
-# Run migrations untuk membuat tabel
+# Menjalankan migrasi database
 php artisan migrate
 
-# Run seeders untuk dummy data
+# Mengisi data demo
 php artisan db:seed
 ```
 
-### 8. Start Development Server
+## Struktur project
 
-Buka 2 terminal:
-
-**Terminal 1 - Laravel Server:**
-```bash
-php artisan serve
+```text
+app/                 Controller, model, import, dan export
+database/migrations/ Struktur tabel database
+database/seeders/    Data awal dan data demo
+resources/js/        Halaman dan komponen React/TypeScript
+resources/views/     Template Blade, termasuk laporan PDF
+routes/              Definisi route aplikasi
 ```
 
-**Terminal 2 - Vite (Frontend):**
-```bash
-npm run dev
-```
+## Catatan
 
-### 9. Access Application
-
-Buka browser: `http://localhost:8000`
-
-## 🔐 Demo Accounts
-
-### Owner Account
-- Email: `owner@sipim.com`
-- Password: `password`
-
-### Employee Account
-- Email: `employee@sipim.com`
-- Password: `password`
-
-## 📁 Project Structure
-
-```
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Auth/
-│   │   │   ├── DashboardController.php
-│   │   │   ├── ProductController.php
-│   │   │   ├── SupplierController.php
-│   │   │   ├── TransactionController.php
-│   │   │   ├── UserController.php
-│   │   │   └── PosController.php
-│   │   └── Middleware/
-│   │       └── RoleMiddleware.php
-│   └── Models/
-│       ├── User.php
-│       ├── Product.php
-│       ├── Supplier.php
-│       └── Transaction.php
-├── database/
-│   ├── migrations/
-│   └── seeders/
-├── resources/
-│   ├── css/
-│   │   └── app.css
-│   └── js/
-│       ├── Components/
-│       ├── Layouts/
-│       │   ├── AuthenticatedLayout.tsx
-│       │   └── Sidebar.tsx
-│       ├── Pages/
-│       │   ├── Auth/
-│       │   │   └── Login.tsx
-│       │   ├── Dashboard.tsx
-│       │   ├── Products/
-│       │   ├── Suppliers/
-│       │   ├── Transactions/
-│       │   ├── Users/
-│       │   └── Pos/
-│       ├── types/
-│       │   ├── index.d.ts
-│       │   └── global.d.ts
-│       ├── app.tsx
-│       └── bootstrap.ts
-└── routes/
-    ├── web.php
-    └── auth.php
-```
-
-## ✨ Features
-
-- ✅ **Dashboard** - Analytics dan overview
-- ✅ **Products Management** - CRUD produk
-- ✅ **Suppliers Management** - Manajemen supplier
-- ✅ **Transactions** - Riwayat transaksi
-- ✅ **Point of Sale (PoS)** - Sistem kasir
-- ✅ **Users Management** - Manajemen user (Owner only)
-- ✅ **Authentication** - Login/Logout dengan session
-- ✅ **Role-based Access** - Owner & Employee roles
-
-## 🛠 Tech Stack
-
-### Backend
-- Laravel 11
-- MySQL
-- Inertia.js Server Adapter
-
-### Frontend
-- React 18
-- TypeScript
-- Inertia.js React
-- Tailwind CSS
-- Lucide React Icons
-- Vite
-
-## 📝 Development Commands
-
-```bash
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
-
-# Run PHP tests
-php artisan test
-
-# Clear cache
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-
-# Create new controller
-php artisan make:controller NameController
-
-# Create new model with migration
-php artisan make:model ModelName -m
-
-# Create new seeder
-php artisan make:seeder TableSeeder
-```
-
-## 🔄 Next Steps
-
-STEP 1: ✅ Setup Laravel 11 + Inertia.js + React (DONE)
-
-STEP 2: Database Design & Migrations
-- Create migrations untuk semua tabel
-- Setup relationships
-- Create seeders dengan dummy data
-
-STEP 3: Complete Authentication System
-
-STEP 4: Implement All Pages & Components
-
-STEP 5: Implement Business Logic & Controllers
-
-STEP 6: Testing & Refinement
-
-## 📞 Support
-
-Jika ada pertanyaan atau masalah, silakan hubungi developer.
-
----
-
-Made with ❤️ using Laravel + Inertia.js + React
+- Jangan membagikan file `.env` atau kredensial database.
+- Data contoh dari seeder ditujukan untuk demonstrasi, bukan data operasional.
+- Pastikan konfigurasi database dan environment telah disesuaikan sebelum deploy.
